@@ -20,3 +20,11 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // Route::patch('usuarios/{usuario}', [UsersController::class, 'update']);
     Route::delete('usuarios/{usuario}', [UsersController::class, 'destroy']);
 });
+
+Route::fallback(function () {
+    return response()->json([
+        'status' => 'error',
+        'message' => 'Endpoint inexistente.',
+        'info' => 'Verifique se a URL está correta ou consulte a documentação'
+    ], 404);
+});
