@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Auth\AuthController;
+use App\Http\Controllers\Api\V1\Entidade\EntidadeController;
 use App\Http\Controllers\Api\V1\Users\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,14 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::put('usuarios/{usuario}', [UsersController::class, 'update']);
     // Route::patch('usuarios/{usuario}', [UsersController::class, 'update']);
     Route::delete('usuarios/{usuario}', [UsersController::class, 'destroy']);
+
+    // Rotas das entidades
+    Route::get('entidade', [EntidadeController::class, 'index']);
+    Route::post('entidade', [EntidadeController::class, 'store']);
+    Route::get('entidade/{entidade}', [EntidadeController::class, 'show']);
+    Route::put('entidade/{entidade}', [EntidadeController::class, 'update']);
+    // Route::patch('entidade/{entidade}', [EntidadeController::class, 'update']);
+    Route::delete('entidade/{entidade}', [EntidadeController::class, 'destroy']);
 });
 
 Route::fallback(function () {
