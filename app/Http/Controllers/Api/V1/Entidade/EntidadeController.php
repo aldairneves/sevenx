@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Entidade;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Entidade\StoreEntidadeRequest;
+use App\Http\Requests\Api\V1\Entidade\UpdateEntidadeRequest;
 use App\Http\Resources\Api\V1\Entidade\EntidadeResource;
 use App\Models\Entidade\Entidade;
 use Illuminate\Http\Request;
@@ -43,16 +44,22 @@ class EntidadeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateEntidadeRequest $request, Entidade $Entidade)
     {
-        //
+        $data = $request->validated();
+
+        $Entidade->update($data);
+
+        return new EntidadeResource($Entidade);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Entidade $Entidade)
     {
-        //
+        $Entidade->delete();
+
+        return response()->json(null, 204);
     }
 }

@@ -36,6 +36,6 @@ class Entidade extends Model
 
     public static function getNotFoundMessage()
     {
-        return 'A entidade solicitado não existe.';
+        return 'A entidade solicitada não existe.';
     }
 }
