@@ -7,6 +7,9 @@ use App\Http\Requests\Api\V1\Users\StoreUserRequest;
 use App\Http\Requests\Api\V1\Users\UpdateUserRequest;
 use App\Http\Resources\Api\V1\Users\UsersResource;
 use App\Models\User;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class UsersController extends Controller
 {
@@ -62,8 +65,42 @@ class UsersController extends Controller
      */
     public function destroy(User $usuario)
     {
-        $usuario->delete();
+        try {
+            $usuario->delete();
 
-        return response()->json(null, 204);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Usuário excluído com sucesso.'
+            ], 200);
+        } catch (QueryException $e) {
+
+            if ($e->getCode() === '23000') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Este usuário possui vínculos ativos e não pode ser removido.'
+                ], 409);
+            }
+
+            Log::critical('Erro de banco ao excluir usuário', [
+                'id' => $usuario->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erro interno do sistema.'
+            ], 500);
+        } catch (Throwable $e) {
+
+            Log::error('Erro inesperado ao excluir usuário', [
+                'id' => $usuario->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Ocorreu um erro interno.'
+            ], 500);
+        }
     }
 }

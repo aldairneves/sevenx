@@ -7,7 +7,10 @@ use App\Http\Requests\Api\V1\Entidade\StoreEntidadeRequest;
 use App\Http\Requests\Api\V1\Entidade\UpdateEntidadeRequest;
 use App\Http\Resources\Api\V1\Entidade\EntidadeResource;
 use App\Models\Entidade\Entidade;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class EntidadeController extends Controller
 {
@@ -56,10 +59,44 @@ class EntidadeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Entidade $Entidade)
+    public function destroy(Entidade $entidade)
     {
-        $Entidade->delete();
+        try {
+            $entidade->delete();
 
-        return response()->json(null, 204);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Entidade excluída com sucesso.'
+            ], 200);
+        } catch (QueryException $e) {
+
+            if ($e->getCode() === '23000') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Esta Entidade possui vínculos ativos e não pode ser removido.'
+                ], 409);
+            }
+
+            Log::critical('Erro de banco ao excluir entidade', [
+                'id' => $entidade->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erro interno do sistema.'
+            ], 500);
+        } catch (Throwable $e) {
+
+            Log::error('Erro inesperado ao excluir entidade', [
+                'id' => $entidade->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Ocorreu um erro interno.'
+            ], 500);
+        }
     }
 }
