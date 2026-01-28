@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\Users\UpdateUserRequest;
 use App\Http\Resources\Api\V1\Users\UsersResource;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -16,9 +17,14 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = User::all();
+        $perPage = min($request->integer('per_page', 15), 50);
+
+        $usuarios = User::query()
+            ->select(['id', 'name', 'email', 'created_at'])
+            ->orderByDesc('id')
+            ->cursorPaginate($perPage);
 
         return UsersResource::collection($usuarios);
     }

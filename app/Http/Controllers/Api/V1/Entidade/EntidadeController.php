@@ -17,11 +17,16 @@ class EntidadeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dadosEntidade = Entidade::all();
+        $perPage = min($request->integer('per_page', 15), 50);
 
-        return EntidadeResource::collection($dadosEntidade);
+        $entidades = Entidade::query()
+            ->select(['id', 'nome', 'status', 'created_at'])
+            ->orderByDesc('id')
+            ->cursorPaginate($perPage);
+
+        return EntidadeResource::collection($entidades);
     }
 
     /**
