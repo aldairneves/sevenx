@@ -36,29 +36,29 @@ class EntidadeController extends Controller
     {
         $data = $request->validated();
 
-        $Entidade = Entidade::create($data);
+        $entidade = Entidade::create($data);
 
-        return new EntidadeResource($Entidade);
+        return new EntidadeResource($entidade);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Entidade $Entidade)
+    public function show(Entidade $entidade)
     {
-        return new EntidadeResource($Entidade);
+        return new EntidadeResource($entidade);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEntidadeRequest $request, Entidade $Entidade)
+    public function update(UpdateEntidadeRequest $request, Entidade $entidade)
     {
         $data = $request->validated();
 
-        $Entidade->update($data);
+        $entidade->update($data);
 
-        return new EntidadeResource($Entidade);
+        return new EntidadeResource($entidade);
     }
 
     /**
