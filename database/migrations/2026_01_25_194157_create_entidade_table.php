@@ -10,14 +10,11 @@ return new class extends Migration
     {
         Schema::create('entidade', function (Blueprint $table) {
             $table->id();
-
             $table->string('nome');
             $table->enum('tipo', ['propriedade', 'instituicao']);
             $table->string('cnpj_cpf', 20)->nullable();
-
             $table->enum('status', ['ativo', 'inativo'])
                 ->default('inativo');
-
             $table->timestamps();
         });
     }
