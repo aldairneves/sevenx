@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Entidade\Entidade;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,5 +52,10 @@ class User extends Authenticatable
     public static function getNotFoundMessage()
     {
         return 'O usuário solicitado não existe.';
+    }
+
+    public function entidade()
+    {
+        return $this->belongsTo(Entidade::class);
     }
 }

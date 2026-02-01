@@ -2,6 +2,7 @@
 
 namespace App\Models\Entidade;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +38,10 @@ class Entidade extends Model
     public static function getNotFoundMessage()
     {
         return 'A entidade solicitada não existe.';
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }
