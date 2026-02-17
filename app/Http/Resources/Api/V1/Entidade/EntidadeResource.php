@@ -19,7 +19,7 @@ class EntidadeResource extends JsonResource
             'nome' => $this->nome,
             'cnpj_cpf' => $this->cnpj_cpf,
             'status' => $this->status,
-            // 'criado_em' => $this->created_at->format('d/m/Y H:i'),
+            'criado_em' => $this->created_at->format('d/m/Y H:i'),
         ];
     }
 }
