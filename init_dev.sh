@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Como usar: ./init.sh
+# Como usar: ./init_dev.sh
 
 echo "🚀 Iniciando setup do Laravel com Docker..."
 
