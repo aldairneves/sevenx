@@ -4,6 +4,14 @@
 
 echo "🚀 Iniciando setup do Laravel com Docker..."
 
+# 📄 Verifica .env
+if [ ! -f .env ]; then
+  echo "📄 Arquivo .env não encontrado. Criando a partir do .env.example..."
+  cp .env.example .env
+else
+  echo "📄 Arquivo .env já existe."
+fi
+
 # 🔥 Sobe os containers
 docker compose up -d --build
 
