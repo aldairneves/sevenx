@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Todo extends Model
+{
+
+    protected $table = 'todo';
+
+    protected $fillable = [
+        'titulo',
+        'descricao',
+        'concluida',
+        'prazo',
+    ];
+
+    protected $casts = [
+        'concluida' => 'boolean',
+        'prazo' => 'date',
+    ];
+}
