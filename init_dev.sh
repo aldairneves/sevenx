@@ -44,4 +44,8 @@ docker compose exec app php artisan key:generate --force
 echo "🗄️ Rodando migrations..."
 docker compose exec app php artisan migrate
 
+# 🌱 Rodando seeders
+echo "Rodando seeders..."
+docker compose exec app php artisan db:seed --force
+
 echo "🎉 Projeto pronto com sucesso!"
