@@ -13,12 +13,12 @@ else
 fi
 
 # 🔥 Sobe os containers
-docker compose up -d --build
+sudo docker compose up -d --build
 
 # ⏳ Espera o MySQL estar realmente pronto (CORREÇÃO REAL)
 echo "⏳ Aguardando MySQL aceitar conexões..."
 
-until docker compose exec app php -r "
+until sudo docker compose exec app php -r "
 try {
     new PDO('mysql:host=db;dbname=laravel','laravel','laravel');
     exit(0);
@@ -34,18 +34,18 @@ echo "✅ MySQL pronto e acessível!"
 
 # 📦 Instala dependências do Laravel
 echo "📦 Instalando dependências..."
-docker compose exec app composer install
+sudo docker compose exec app composer install
 
 # 🔑 Gera APP_KEY (somente se não existir)
 echo "🔑 Verificando APP_KEY..."
-docker compose exec app php artisan key:generate --force
+sudo docker compose exec app php artisan key:generate --force
 
 # 🗄️ Rodando migrations
 echo "🗄️ Rodando migrations..."
-docker compose exec app php artisan migrate
+sudo docker compose exec app php artisan migrate
 
 # 🌱 Rodando seeders
 echo "Rodando seeders..."
-docker compose exec app php artisan db:seed --force
+sudo docker compose exec app php artisan db:seed --force
 
 echo "🎉 Projeto pronto com sucesso!"
